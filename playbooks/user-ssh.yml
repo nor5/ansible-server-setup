@@ -1,0 +1,6 @@
+---
+
+- name: Deploy User and ssh keys
+  hosts: mavm
+  roles:
+    - user-ssh

@@ -1,0 +1,26 @@
+---
+- name: Create user
+  ansible.builtin.user:
+    name: nour
+    create_home: true
+    shell: /bin/bash
+  tags:
+    - user
+
+- name: Copy ssh keys
+  ansible.posix.authorized_key:
+    user: nour
+    state: present
+    key: https://github.com/{{ item }}.keys
+  loop: "{{ ssh_user }}"
+  tags:
+    - key_ssh
+
+- name: Deploy file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: /home/nour/.env
+    mode: "0600"
+    owner: nour
+  tags:
+    - file
